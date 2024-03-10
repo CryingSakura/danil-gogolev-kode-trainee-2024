@@ -1,5 +1,4 @@
 package com.example.stafflist.screen.StaffList.fragments
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,34 +16,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.stafflist.R
+import coil.compose.AsyncImage
+import com.example.stafflist.data.Employee
 import com.example.stafflist.ui.theme.FirstLastNameInCardColor
 import com.example.stafflist.ui.theme.SpecialityInCardColor
 import com.example.stafflist.ui.theme.TagInCardColor
 
-@Preview(showBackground = true)
 @Composable
 fun EmployeeCard(
-    /*employee: Employee,*/
+    employee: Employee,
 ){
     Row (modifier = Modifier
         .height(80.dp)
         .fillMaxWidth()
-        .clickable {  },
+        .clickable { },
         verticalAlignment = Alignment.CenterVertically){
 
         Box (modifier = Modifier
             .size(width = 88.dp, height =  84.dp),
             contentAlignment = Alignment.CenterStart) {
-            Image(modifier = Modifier
+            AsyncImage(modifier = Modifier
                 .size(72.dp)
                 .clip(CircleShape),
-                painter = painterResource(id = R.drawable.zaglushka),
-                contentDescription = "test img",
+                model = employee.avatarUrl,
+                contentDescription = employee.id,
                 contentScale = ContentScale.FillBounds)
         }
 
@@ -52,15 +49,15 @@ fun EmployeeCard(
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center) {
             Row {
-                Text(text = "Alex Minogarov",
+                Text(text = "${employee.firstName} ${employee.lastName}",
                     color = FirstLastNameInCardColor,
                     fontWeight = FontWeight.Bold)
                 Text(modifier = Modifier.padding(start = 2.dp),
-                    text = "mi",
+                    text = employee.userTag.lowercase(),
                     color = TagInCardColor)
             }
             Row {
-                Text(text = "Analyst",
+                Text(text = employee.position,
                     color = SpecialityInCardColor)
             }
         }
