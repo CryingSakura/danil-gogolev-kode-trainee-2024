@@ -10,7 +10,7 @@ interface RequestService{
     suspend fun getStaffList(): StaffListResponse
 
     companion object {
-        const val  BASE_URL = "https://stoplight.io/mocks/kode-api/trainee-test/331141861"
+        const val  BASE_URL = "https://stoplight.io/mocks/kode-api/trainee-test/331141861/"
     }
 
 }
