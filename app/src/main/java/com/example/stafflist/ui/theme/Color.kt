@@ -18,3 +18,11 @@ val TagInCardColor = Color(0xFF97979B)
 val OnSelectTabIndicatorColor = Color(0xFF6534FF)
 val OnSelectTabTextColor = Color(0xFF050510)
 val UnSelectedTabTextColor = Color(0xFF97979B)
+//SearchBar
+val SearchBarContainerColor = Color(0xFFF7F7F8)
+//tabRow
+val SelectedIndicatorColor = Color(0xFF6534FF)
+//val DetailScreen
+val DeatailScreenCapBackgroundColor = Color(0xFFF7F7F8)
+//for primary
+val ForPrimaryColor = Color(0xFF6534FF)
