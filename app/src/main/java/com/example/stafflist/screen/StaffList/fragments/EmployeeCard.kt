@@ -12,14 +12,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.stafflist.MainActivityViewModel
 import com.example.stafflist.data.Employee
+import com.example.stafflist.navigation.Graphs
 import com.example.stafflist.ui.theme.FirstLastNameInCardColor
 import com.example.stafflist.ui.theme.SpecialityInCardColor
 import com.example.stafflist.ui.theme.TagInCardColor
@@ -27,11 +32,24 @@ import com.example.stafflist.ui.theme.TagInCardColor
 @Composable
 fun EmployeeCard(
     employee: Employee,
+    viewModel: MainActivityViewModel,
+    navController: NavController
 ){
+
+    val detailScreenViewModel = viewModel.detailSreenViewModel
+
+
+
+
+    val showShimmer = remember { mutableStateOf(true) }
+
     Row (modifier = Modifier
         .height(80.dp)
         .fillMaxWidth()
-        .clickable { },
+        .clickable {
+            detailScreenViewModel.fetchEmployee(employee)
+            navController.navigate(Graphs.DETAILSCREEN)
+        },
         verticalAlignment = Alignment.CenterVertically){
 
         Box (modifier = Modifier
@@ -42,7 +60,8 @@ fun EmployeeCard(
                 .clip(CircleShape),
                 model = employee.avatarUrl,
                 contentDescription = employee.id,
-                contentScale = ContentScale.FillBounds)
+                contentScale = ContentScale.FillBounds,
+                onSuccess = { showShimmer.value = false })
         }
 
 
@@ -52,12 +71,13 @@ fun EmployeeCard(
                 Text(text = "${employee.firstName} ${employee.lastName}",
                     color = FirstLastNameInCardColor,
                     fontWeight = FontWeight.Bold)
-                Text(modifier = Modifier.padding(start = 2.dp),
+                Text(modifier = Modifier
+                    .padding(start = 2.dp),
                     text = employee.userTag.lowercase(),
                     color = TagInCardColor)
             }
             Row {
-                Text(text = employee.position,
+                Text(text = employee.department,
                     color = SpecialityInCardColor)
             }
         }
