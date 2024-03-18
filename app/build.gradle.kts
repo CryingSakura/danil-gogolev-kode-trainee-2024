@@ -79,4 +79,15 @@ dependencies {
 
     //gson-conv
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    //navigation
+    val nav_version = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    //material-components
+    val material_components = "1.6.3"
+    implementation("androidx.compose.material:material:$material_components")
+
+
+
 }
