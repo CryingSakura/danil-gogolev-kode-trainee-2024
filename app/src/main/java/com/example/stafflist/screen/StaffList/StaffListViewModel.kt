@@ -6,8 +6,8 @@ import com.example.stafflist.data.ChangeDepartmentStringView
 import com.example.stafflist.data.Employee
 import com.example.stafflist.data.StaffListRepository
 import com.example.stafflist.network.Results
+import com.example.stafflist.screen.StaffList.fragments.PullRefresh.CustomIdnicatorViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -16,8 +16,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class StaffListViewModel(
-    private val staffListRepository: StaffListRepository
+    private val staffListRepository: StaffListRepository,
+    customInputIndicatorViewModel: CustomIdnicatorViewModel
 ): ViewModel(){
+
+    val customIndicatorViewModel = customInputIndicatorViewModel
 
 
 
@@ -49,9 +52,23 @@ class StaffListViewModel(
     fun refresh() {
         viewModelScope.launch {
             _isRefreshing.value = true
-            delay(3000L)
-            getData()
-            _isRefreshing.value = false
+
+            staffListRepository.getStaffList().collectLatest {result ->
+                when(result){
+                    is Results.Error ->{
+                        _showErrorChannel.send(true)
+                    }
+                    is Results.Success -> {
+                        _isRefreshing.value = false
+                        customIndicatorViewModel.changeRefreshIndicatorStateIndex(0)
+                        result.data?.let {staffs ->
+
+                            _staffList.update { ChangeDepartmentStringView( staffs ) }
+                        }
+                    }
+                }
+            }
+
         }
     }
 
@@ -72,9 +89,6 @@ class StaffListViewModel(
             }
         }
     }
-
-
-
 
 
 
