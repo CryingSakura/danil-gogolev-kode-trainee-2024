@@ -19,7 +19,7 @@ import com.example.stafflist.network.StaffListRepImplementation
 import com.example.stafflist.screen.CustomTopAppBar.TopAppBarViewModel
 import com.example.stafflist.screen.CustomTopAppBar.fragments.Search.SearchViewModel
 import com.example.stafflist.screen.CustomTopAppBar.fragments.TabRow.TabRowViewModel
-import com.example.stafflist.screen.DetailSreen.DetailSreenViewModel
+import com.example.stafflist.screen.DetailScreen.DetailSreenViewModel
 import com.example.stafflist.screen.SortScreen.SortViewModel
 import com.example.stafflist.screen.StaffList.StaffListViewModel
 import com.example.stafflist.screen.StaffList.fragments.PullRefresh.CustomIdnicatorViewModel

@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.stafflist.MainActivityViewModel
-import com.example.stafflist.screen.DetailSreen.DetailSreen
+import com.example.stafflist.screen.DetailScreen.DetailScreen
 import com.example.stafflist.screen.FatalErrorPage
 import com.example.stafflist.screen.MainView
 
@@ -19,7 +19,7 @@ fun RootNavigationGraph(navController: NavHostController, viewModel: MainActivit
             MainView(viewModel = viewModel, navController)
         }
         composable(route = Graphs.DETAILSCREEN){
-            DetailSreen(viewModel = viewModel, navController)
+            DetailScreen(viewModel = viewModel, navController)
         }
         composable(route = Graphs.FATALERROR){
             FatalErrorPage(navController = navController, viewModel = viewModel)

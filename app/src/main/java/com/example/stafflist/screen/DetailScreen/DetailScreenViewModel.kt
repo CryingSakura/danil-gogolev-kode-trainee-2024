@@ -1,4 +1,4 @@
-package com.example.stafflist.screen.DetailSreen
+package com.example.stafflist.screen.DetailScreen
 
 import androidx.lifecycle.ViewModel
 import com.example.stafflist.data.Employee
@@ -14,25 +14,6 @@ class DetailSreenViewModel: ViewModel(){
 
 
 
-
-    /*fun changeMonthStringView(month: String): String {
-        var mymonth = month
-        when(month){
-            "JANUARY" -> mymonth = "Января"
-            "FEBRUARY" -> mymonth = "Февраля"
-            "MARCH" -> mymonth = "Марта"
-            "APRIL" -> mymonth = "Апреля"
-            "MAY" -> mymonth = "Мая"
-            "JUNE" -> mymonth = "Июня"
-            "JULY" -> mymonth = "Июля"
-            "AUGUST" -> mymonth = "Августа"
-            "SEPTEMBER" -> mymonth = "Сентября"
-            "OCTOBER" -> mymonth = "Октября"
-            "NOVEMBER" -> mymonth = "Ноября"
-            "DECEMBER" -> mymonth = "Декабря"
-        }
-        return mymonth
-    }*/
 
     fun fullYearDeclinationTextReturn(fullYear: Int): String{
         val trueDeclination: String

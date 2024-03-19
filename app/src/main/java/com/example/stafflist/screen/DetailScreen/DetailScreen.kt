@@ -1,4 +1,4 @@
-package com.example.stafflist.screen.DetailSreen
+package com.example.stafflist.screen.DetailScreen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -19,17 +19,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.stafflist.MainActivityViewModel
 import com.example.stafflist.navigation.Graphs
-import com.example.stafflist.screen.DetailSreen.fragments.DetailScreenBody
-import com.example.stafflist.screen.DetailSreen.fragments.DetailScreenCap
+import com.example.stafflist.screen.DetailScreen.fragments.DetailScreenBody
+import com.example.stafflist.screen.DetailScreen.fragments.DetailScreenCap
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun DetailSreen(viewModel: MainActivityViewModel, navController: NavController) {
+fun DetailScreen(viewModel: MainActivityViewModel, navController: NavController) {
 
     val detailSreenViewModel = viewModel.detailSreenViewModel
 
     val employee = detailSreenViewModel.stateEmployee.collectAsState().value
+
 
 
 
