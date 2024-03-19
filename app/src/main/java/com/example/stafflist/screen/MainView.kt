@@ -21,11 +21,11 @@ fun MainView(viewModel: MainActivityViewModel, navController: NavController){
 
     val staffViewModel = viewModel.staffListViewModel
 
-
-    val loading = staffViewModel.staffList.collectAsState().value.isEmpty()
-
+    val listEmpty = staffViewModel.staffList.collectAsState().value.isEmpty()
 
     val errorState = viewModel.staffListViewModel.showErrorChannel.collectAsState(initial = false).value
+
+
 
 
 
@@ -34,11 +34,11 @@ fun MainView(viewModel: MainActivityViewModel, navController: NavController){
     }
 
 
-    if (errorState) navController.navigate(Graphs.FATALERROR)
+    if (errorState && staffViewModel.staffList.value.isEmpty()) navController.navigate(Graphs.FATALERROR)
 
     Column {
         CustomTopAppBar(isSheetOpen, viewModel.topAppBarViewModel)
-        if (loading) {
+        if (listEmpty) {
             ShimmerList()
         } else {
             StaffList(viewModel = viewModel, navController)
