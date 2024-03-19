@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import com.example.stafflist.MainActivityViewModel
 import com.example.stafflist.navigation.Graphs
 import com.example.stafflist.screen.CustomTopAppBar.CustomTopAppBar
-import com.example.stafflist.screen.StaffList.ShimmerList
+import com.example.stafflist.screen.ShimmerList.ShimmerList
 import com.example.stafflist.screen.StaffList.StaffList
 
 @OptIn(ExperimentalMaterial3Api::class)
