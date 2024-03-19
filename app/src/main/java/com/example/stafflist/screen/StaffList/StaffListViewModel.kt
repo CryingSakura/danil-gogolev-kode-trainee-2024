@@ -27,20 +27,6 @@ class StaffListViewModel(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-/*
-    fun sortByIndex(index: Int, listForSort: StateFlow<List<Employee>>): List<Employee>{
-        val localList = listForSort.value
-        when(index) {
-            0 -> localList.sortedBy { it.birthday }
-            1 -> localList.sortedBy {
-
-                DateChanger(it.firstName).month
-            }
-        }
-        return localList
-    }
-*/
-
 
     private val _staffList = MutableStateFlow<List<Employee>>(emptyList())
     val staffList =_staffList.asStateFlow()
