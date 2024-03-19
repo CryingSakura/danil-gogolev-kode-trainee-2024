@@ -13,16 +13,26 @@ val Pink40 = Color(0xFF7D5260)
 //Card Colors
 val FirstLastNameInCardColor = Color(0xFF050510)
 val SpecialityInCardColor = Color(0xFF55555C)
-val TagInCardColor = Color(0xFF97979B)
+
 //Tab Colors
 val OnSelectTabIndicatorColor = Color(0xFF6534FF)
-val OnSelectTabTextColor = Color(0xFF050510)
+
 val UnSelectedTabTextColor = Color(0xFF97979B)
 //SearchBar
 val SearchBarContainerColor = Color(0xFFF7F7F8)
+val SearchBarElementsColor = Color(0xFFC3C3C6)
+
 //tabRow
 val SelectedIndicatorColor = Color(0xFF6534FF)
 //val DetailScreen
 val DeatailScreenCapBackgroundColor = Color(0xFFF7F7F8)
 //for primary
+val ForOnSecondaryColor = Color(0xFF6534FF)
 val ForPrimaryColor = Color(0xFF6534FF)
+//Text
+val TagInCardColor = Color(0xFF97979B)
+val DepartmentInCardColor = Color(0xFF55555C)
+val MainTextColor = Color(0xFF050510)
+
+//for theme
+val ThemeBackgroundColor = Color(0xFFFFFFFF)
