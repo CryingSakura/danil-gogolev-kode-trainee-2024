@@ -3,6 +3,7 @@ package com.example.stafflist.screen.StaffList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stafflist.data.ChangeDepartmentStringView
+import com.example.stafflist.data.DateChanger
 import com.example.stafflist.data.Employee
 import com.example.stafflist.data.StaffListRepository
 import com.example.stafflist.network.Results
@@ -14,15 +15,19 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class StaffListViewModel(
     private val staffListRepository: StaffListRepository,
     customInputIndicatorViewModel: CustomIdnicatorViewModel
+
 ): ViewModel(){
 
+
+
+
+
     val customIndicatorViewModel = customInputIndicatorViewModel
-
-
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -75,8 +80,6 @@ class StaffListViewModel(
             }
         }
     }
-
-
 
     init {
         getData()
