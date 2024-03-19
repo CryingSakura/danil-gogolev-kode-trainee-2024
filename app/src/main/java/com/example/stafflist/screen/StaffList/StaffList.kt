@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
@@ -19,15 +18,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.stafflist.MainActivityViewModel
 import com.example.stafflist.data.DateChanger
 import com.example.stafflist.screen.StaffList.fragments.EmployeeCard
 import com.example.stafflist.screen.StaffList.fragments.NextYearItem
+import com.example.stafflist.screen.StaffList.fragments.PullRefresh.CustomIndicatorRefresh
 import kotlinx.coroutines.delay
 import java.util.Calendar
 
@@ -41,8 +39,10 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
     val searchViewModel = viewModel.topAppBarViewModel.searchViewModel
     val staffListViewModel = viewModel.staffListViewModel
     val sortViewModel = viewModel.sortViewModel
+    val customIndicatorViewModel = viewModel.staffListViewModel.customIndicatorViewModel
 
     val searchText = searchViewModel.searchText.collectAsState().value
+
 
     val selectedIndex = tabRowViewModel.selectedIndex.collectAsState().value
 
@@ -63,13 +63,7 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
 
 
 
-    val isRefreshing = staffListViewModel.isRefreshing.collectAsState().value
-    val refreshing = remember{
-        mutableStateOf(isRefreshing)
-    }
-    val pullRefreshState = rememberPullRefreshState(refreshing = refreshing.value,
-        onRefresh = { staffListViewModel.refresh() },
-        refreshThreshold = 90.dp,)
+
 
 
 
@@ -134,6 +128,35 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
 
 
 
+    val isRefreshing = staffListViewModel.isRefreshing.collectAsState().value
+    val refreshing = remember{
+        mutableStateOf(isRefreshing)
+    }
+    val pullRefreshState = rememberPullRefreshState(refreshing = refreshing.value,
+        onRefresh = {
+            customIndicatorViewModel.changeRefreshIndicatorStateIndex(3)
+            staffListViewModel.refresh()
+
+
+
+            },
+        refreshThreshold = 90.dp)
+
+
+
+    LaunchedEffect(key1 = pullRefreshState.progress){
+        when {
+            pullRefreshState.progress >= 1 -> {
+                customIndicatorViewModel.changeRefreshIndicatorStateIndex(2)
+            }
+
+            pullRefreshState.progress > 0 -> {
+                customIndicatorViewModel.changeRefreshIndicatorStateIndex(1)
+            }
+        }
+    }
+
+
 
 
 
@@ -143,12 +166,19 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
 
 
     HorizontalPager(state = pagerState) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .pullRefresh(pullRefreshState))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .pullRefresh(pullRefreshState)
+        )
         {
+            CustomIndicatorRefresh(
+                viewModel = customIndicatorViewModel,
+                pullToRefreshProgress = pullRefreshState.progress
+            )
 
-            Column(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.weight(1f)) {
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -191,8 +221,6 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
                             }) { employee ->
                                 if (employee.dateInNextYear) {
                                     EmployeeCard(employee, viewModel, navController)
-                                    Log.e("GogaStaffsBool", "${employee.dateInNextYear}")
-                                    Log.e("GogaStaffsName", "${employee.firstName}")
                                 }
 
                             }
@@ -225,8 +253,6 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
                                 if (employee.dateInNextYear) {
                                     EmployeeCard(employee, viewModel, navController)
                                     NextYearItem(nextYear = nextYear)
-                                    Log.e("GogaStaffsBool", "${employee.dateInNextYear}")
-                                    Log.e("GogaStaffsName", "${employee.firstName}")
                                 }
 
                             }
@@ -238,18 +264,12 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
 
 
 
-            PullRefreshIndicator(
-                modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = refreshing.value,
-                state = pullRefreshState,
-                backgroundColor = Color.White)
 
-            }
 
+
+        }
 
     }
-
-
 }
 
 
