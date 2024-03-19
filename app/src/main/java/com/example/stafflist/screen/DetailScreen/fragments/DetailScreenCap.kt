@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.stafflist.R
 import com.example.stafflist.data.Employee
 
 @Composable
@@ -37,7 +38,7 @@ fun DetailScreenCap(employee: Employee) {
             AsyncImage(modifier = Modifier
                 .size(104.dp)
                 .clip(CircleShape),
-                model = employee.avatarUrl,
+                model = employee.avatarUrl.ifEmpty{R.drawable.zaglushka},
                 contentDescription = employee.avatarUrl.last().toString())
 
             Spacer(modifier = Modifier.height(8.dp))

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.stafflist.MainActivityViewModel
+import com.example.stafflist.R
 import com.example.stafflist.data.DateChanger
 import com.example.stafflist.data.Employee
 import com.example.stafflist.navigation.Graphs
@@ -64,7 +65,9 @@ fun EmployeeCard(
             AsyncImage(modifier = Modifier
                 .size(72.dp)
                 .clip(CircleShape),
-                model = employee.avatarUrl,
+                model = employee.avatarUrl.ifEmpty {
+                    R.drawable.zaglushka
+                },
                 contentDescription = employee.id,
                 contentScale = ContentScale.FillBounds)
         }
