@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
@@ -44,8 +44,8 @@ fun CustomIndicatorRefresh(
         if(refreshIndicatorIndex == 3){
             CircularProgressIndicator(
                 modifier = Modifier.size(16.dp),
-                color = Color.Black,
-                trackColor = Color.Gray,
+                color = MaterialTheme.colorScheme.onSecondary,
+                trackColor = MaterialTheme.colorScheme.secondary,
                 strokeWidth = 2.dp,
             )
         }

@@ -9,9 +9,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import com.example.stafflist.ui.theme.MainTextColor
 import com.example.stafflist.ui.theme.SelectedIndicatorColor
+import com.example.stafflist.ui.theme.UnSelectedTabTextColor
 
 @Composable
 fun CustomTabRows(viewModel: TabRowViewModel){
@@ -28,6 +29,7 @@ fun CustomTabRows(viewModel: TabRowViewModel){
                 modifier = Modifier
                     .tabIndicatorOffset(tabPositions[selectedIndex]),
                 color = SelectedIndicatorColor
+
             )
         }) {
         tabTitles.tabListItems.forEachIndexed { index, title ->
@@ -36,7 +38,13 @@ fun CustomTabRows(viewModel: TabRowViewModel){
                     viewModel.updateIndex(index)
                 },
                 text = {
-                    Text(text = title, color = Color.Black, fontSize = 16.sp)
+                    Text(text = title,
+                        color = if(index == selectedIndex){
+                            MainTextColor
+                        } else{
+                            UnSelectedTabTextColor
+                            },
+                        fontSize = 16.sp)
                 })
         }
     }
