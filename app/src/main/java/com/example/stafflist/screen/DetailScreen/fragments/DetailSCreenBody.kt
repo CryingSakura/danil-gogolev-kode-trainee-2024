@@ -1,4 +1,4 @@
-package com.example.stafflist.screen.DetailSreen.fragments
+package com.example.stafflist.screen.DetailScreen.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -16,13 +16,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
-import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stafflist.MainActivityViewModel
@@ -35,7 +35,7 @@ fun DetailScreenBody(ctx: Context, employee: Employee, viewModel: MainActivityVi
 
     val detailSreenViewModel = viewModel.detailSreenViewModel
 
-    val uri = Uri.parse("tel:+7 ${employee.phone}")
+    val uri = Uri.parse("tel: ${employee.phone}")
 
 
 
@@ -59,15 +59,20 @@ fun DetailScreenBody(ctx: Context, employee: Employee, viewModel: MainActivityVi
             verticalAlignment = Alignment.CenterVertically) {
             Icon(modifier = Modifier
                 .size(20.dp),
-                imageVector = Icons.Outlined.Star, contentDescription = null, tint = Color.Black)
+                imageVector = Icons.Rounded.Star,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer)
 
             Spacer(modifier = Modifier.width(14.dp))
 
-            Text(text = "${date.day} ${date.returnMonthNameForDate(date.month)} ${date.year}", fontSize = 16.sp, color = Color.Black)
+            Text(text = "${date.day} ${date.returnMonthNameForDate(date.month)} ${date.year}",
+                fontSize = 16.sp, color = MaterialTheme.colorScheme.onSecondaryContainer)
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Text(text = "$fullYear $yearDeclination", fontSize = 16.sp, color = Color.Black)
+            Text(text = "$fullYear $yearDeclination",
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.surfaceVariant)
         }
 
         Row(modifier = Modifier
@@ -77,12 +82,15 @@ fun DetailScreenBody(ctx: Context, employee: Employee, viewModel: MainActivityVi
 
             Icon(modifier = Modifier
                 .size(20.dp),
-                imageVector = Icons.Outlined.Call, contentDescription = null, tint = Color.Black)
+                imageVector = Icons.Outlined.Call,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer)
 
             Spacer(modifier = Modifier.width(14.dp))
 
             Text(modifier = Modifier.clickable { ctx.startActivity(intent) },
-                text = "+7 ${employee.phone}", fontSize = 16.sp, color = Color.Black)
+                text = employee.phone, fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSecondaryContainer)
 
 
         }

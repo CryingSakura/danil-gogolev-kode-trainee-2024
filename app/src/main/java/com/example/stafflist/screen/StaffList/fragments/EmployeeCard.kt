@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,10 +28,6 @@ import com.example.stafflist.MainActivityViewModel
 import com.example.stafflist.data.DateChanger
 import com.example.stafflist.data.Employee
 import com.example.stafflist.navigation.Graphs
-import com.example.stafflist.ui.theme.DepartmentInCardColor
-import com.example.stafflist.ui.theme.FirstLastNameInCardColor
-import com.example.stafflist.ui.theme.TagInCardColor
-
 @Composable
 fun EmployeeCard(
     employee: Employee,
@@ -75,23 +72,24 @@ fun EmployeeCard(
 
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center) {
-            Row {
+            Row (verticalAlignment = Alignment.CenterVertically){
                 Text(text = "${employee.firstName} ${employee.lastName}",
-                    color = FirstLastNameInCardColor,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp)
                 Text(modifier = Modifier
                     .padding(start = 2.dp),
                     text = employee.userTag.lowercase(),
-                    color = TagInCardColor,
+                    color = MaterialTheme.colorScheme.surfaceVariant,
                     fontSize = 14.sp)
                 Spacer(modifier = Modifier.weight(1f))
-                if (sortId == 1) Text(text = "${date.day} $month", fontSize = 15.sp, color = DepartmentInCardColor)
+                if (sortId == 1) Text(text = "${date.day} $month",
+                    fontSize = 15.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             Row(modifier = Modifier.padding(2.dp)) {
                 Text(text = employee.department,
-                    color = DepartmentInCardColor,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 13.sp)
             }
         }

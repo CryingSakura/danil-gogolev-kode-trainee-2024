@@ -1,6 +1,7 @@
 package com.example.stafflist.screen.CustomTopAppBar.fragments.TabRow
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
@@ -10,9 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import com.example.stafflist.ui.theme.MainTextColor
-import com.example.stafflist.ui.theme.SelectedIndicatorColor
-import com.example.stafflist.ui.theme.UnSelectedTabTextColor
 
 @Composable
 fun CustomTabRows(viewModel: TabRowViewModel){
@@ -28,7 +26,7 @@ fun CustomTabRows(viewModel: TabRowViewModel){
             TabRowDefaults.Indicator(
                 modifier = Modifier
                     .tabIndicatorOffset(tabPositions[selectedIndex]),
-                color = SelectedIndicatorColor
+                color = MaterialTheme.colorScheme.primary
 
             )
         }) {
@@ -40,9 +38,9 @@ fun CustomTabRows(viewModel: TabRowViewModel){
                 text = {
                     Text(text = title,
                         color = if(index == selectedIndex){
-                            MainTextColor
+                            MaterialTheme.colorScheme.onSurfaceVariant
                         } else{
-                            UnSelectedTabTextColor
+                            MaterialTheme.colorScheme.surfaceVariant
                             },
                         fontSize = 16.sp)
                 })

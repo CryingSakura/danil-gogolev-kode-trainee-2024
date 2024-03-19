@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableFloatState
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -29,8 +31,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stafflist.R
-import com.example.stafflist.ui.theme.SearchBarContainerColor
-import com.example.stafflist.ui.theme.SearchBarElementsColor
 
 
 @Composable
@@ -64,7 +64,7 @@ fun CustomSearch(
                 Row(modifier = Modifier
                     .fillMaxWidth(fraction.floatValue)
                     .background(
-                        color = SearchBarContainerColor,
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         shape = RoundedCornerShape(percent = 30)
                     ),
 
@@ -79,14 +79,16 @@ fun CustomSearch(
                     ) {
                         Icon(painter = painterResource(id = R.drawable.my_search),
                             contentDescription = "Search Icon",
-                            tint = SearchBarElementsColor)
+                            tint = if (active.value) MaterialTheme.colorScheme.primary
+                                   else MaterialTheme.colorScheme.onSecondary
+                        )
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
                     if (textLocalState.value.isEmpty() && !active.value) {
                         Text(
-                            text = "Введи имя, тег...",
-                            color = SearchBarElementsColor,
+                            text = stringResource(id = R.string.search_label),
+                            color = MaterialTheme.colorScheme.onSecondary,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                         )
@@ -104,7 +106,11 @@ fun CustomSearch(
                             Icon(
                                 painter = painterResource(id = R.drawable.list_ui_alt),
                                 contentDescription = null,
-                                tint = SearchBarElementsColor
+                                tint = if(isSheetOpen.value){
+                                    MaterialTheme.colorScheme.primary
+                                }else{
+                                    MaterialTheme.colorScheme.onSecondary
+                                }
 
                             )
                         }
@@ -116,7 +122,7 @@ fun CustomSearch(
                             Icon(
                                 imageVector = Icons.Outlined.Close,
                                 contentDescription = null,
-                                tint = SearchBarElementsColor
+                                tint = MaterialTheme.colorScheme.onSecondary
                             )
                         }
                     }

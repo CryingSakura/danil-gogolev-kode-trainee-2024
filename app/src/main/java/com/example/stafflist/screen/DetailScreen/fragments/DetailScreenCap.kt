@@ -1,4 +1,4 @@
-package com.example.stafflist.screen.DetailSreen.fragments
+package com.example.stafflist.screen.DetailScreen.fragments
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,18 +11,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.stafflist.data.Employee
-import com.example.stafflist.ui.theme.DeatailScreenCapBackgroundColor
 
 @Composable
 fun DetailScreenCap(employee: Employee) {
@@ -30,7 +29,7 @@ fun DetailScreenCap(employee: Employee) {
 
     Box(modifier = Modifier
         .fillMaxWidth()
-        .background(color = DeatailScreenCapBackgroundColor)
+        .background(color = MaterialTheme.colorScheme.secondaryContainer)
         .padding(top = 72.dp)) {
         Column(modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -47,15 +46,17 @@ fun DetailScreenCap(employee: Employee) {
                 Text(text = "${employee.firstName} ${employee.lastName}",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black)
+                    color = MaterialTheme.colorScheme.onSecondaryContainer)
 
                 Text(modifier = Modifier.padding(start = 2.dp),
-                    text = employee.userTag, fontSize = 17.sp, color = Color.Black)
+                    text = employee.userTag.lowercase(), fontSize = 17.sp,
+                    color = MaterialTheme.colorScheme.surfaceVariant)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(text = employee.department, fontSize = 13.sp, color = Color.Black)
+            Text(text = employee.department, fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
 
             Spacer(modifier = Modifier.height(8.dp))
         }
