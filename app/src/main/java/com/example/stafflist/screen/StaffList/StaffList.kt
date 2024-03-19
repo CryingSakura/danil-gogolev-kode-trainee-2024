@@ -28,10 +28,11 @@ import com.example.stafflist.screen.StaffList.fragments.PullRefresh.CustomIndica
 import kotlinx.coroutines.delay
 import java.util.Calendar
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class
+@OptIn(
+    ExperimentalFoundationApi::class, ExperimentalMaterialApi::class
 )
 @Composable
-fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
+fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
 
     val tabRowViewModel = viewModel.topAppBarViewModel.tabRowViewModel
     val searchViewModel = viewModel.topAppBarViewModel.searchViewModel
@@ -59,19 +60,11 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
     val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
 
 
-
-
-
-
-
-
-
-
-    val pagerState = rememberPagerState{
+    val pagerState = rememberPagerState {
         tabListItems.size
     }
 
-    val loading = remember{
+    val loading = remember {
         mutableStateOf(true)
     }
 
@@ -88,7 +81,10 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
             staffList.sortedBy { DateChanger(it.birthday).day }
             staffList.sortedBy { DateChanger(it.birthday).month }
         }
-        else -> {staffList.sortedBy { it.id }}
+
+        else -> {
+            staffList.sortedBy { it.id }
+        }
     }
 
     sortedList.forEach {
@@ -96,7 +92,7 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
         if (DateChanger(it.birthday).month < currentMonth) {
             it.dateInNextYear = true
             Log.e("GogaWork", "$it")
-        }else if (DateChanger(it.birthday).month == currentMonth && DateChanger(it.birthday).day < currentDay){
+        } else if (DateChanger(it.birthday).month == currentMonth && DateChanger(it.birthday).day < currentDay) {
             it.dateInNextYear = true
         }
     }
@@ -107,42 +103,41 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
 
     var haveBirthdayNextYear = false
 
-    for (element in sortedList){
-        if (element.dateInNextYear){
+    for (element in sortedList) {
+        if (element.dateInNextYear) {
             haveBirthdayNextYear = true
             break
         }
     }
-    Log.e("GogaHaveBirthday","$haveBirthdayNextYear")
+    Log.e("GogaHaveBirthday", "$haveBirthdayNextYear")
 
     /*var show: Boolean = false*/
-/*
-    staffListViewModel.sortByIndex(sortId, viewModel.staffListViewModel.staffList)*/
+    /*
+        staffListViewModel.sortByIndex(sortId, viewModel.staffListViewModel.staffList)*/
 
 
     Log.e("GogaSortTestStaff", "${sortViewModel.indexOfSelectedItem.collectAsState().value}")
     Log.e("GogaSortTestStaff", "${sortViewModel.indexOfSelectedItem}")
 
 
-
-
     val isRefreshing = staffListViewModel.isRefreshing.collectAsState().value
-    val refreshing = remember{
+    val refreshing = remember {
         mutableStateOf(isRefreshing)
     }
-    val pullRefreshState = rememberPullRefreshState(refreshing = refreshing.value,
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = refreshing.value,
         onRefresh = {
             customIndicatorViewModel.changeRefreshIndicatorStateIndex(3)
             staffListViewModel.refresh()
 
 
+        },
+        refreshThreshold = 90.dp
+    )
 
-            },
-        refreshThreshold = 90.dp)
 
 
-
-    LaunchedEffect(key1 = pullRefreshState.progress){
+    LaunchedEffect(key1 = pullRefreshState.progress) {
         when {
             pullRefreshState.progress >= 1 -> {
                 customIndicatorViewModel.changeRefreshIndicatorStateIndex(2)
@@ -155,109 +150,86 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
     }
 
 
-
-
-
-
-
-
-
-
     HorizontalPager(state = pagerState) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 2.dp)
-                        .padding(horizontal = 16.dp)
-                        .pullRefresh(pullRefreshState),
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    item {
-                        CustomIndicatorRefresh(
-                            viewModel = customIndicatorViewModel,
-                            pullToRefreshProgress = pullRefreshState.progress
-                        )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 2.dp)
+                .padding(horizontal = 16.dp)
+                .pullRefresh(pullRefreshState),
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+
+
+            item {
+                CustomIndicatorRefresh(
+                    viewModel = customIndicatorViewModel,
+                    pullToRefreshProgress = pullRefreshState.progress
+                )
+            }
+
+            if (!refreshing.value) {
+                items(items = sortedList.filter {
+
+                    if (tabListItems[selectedIndex] == "All") {
+                        tabListItems[selectedIndex] == "All"
+                    } else {
+                        it.department == tabListItems[selectedIndex]
+                    }
+                }.filter {
+                    it.firstName.lowercase().startsWith(searchText.lowercase()) ||
+                    it.lastName.lowercase().startsWith(searchText.lowercase()) ||
+                    it.userTag.lowercase().startsWith(searchText.lowercase())
+                }) { employee ->
+
+
+
+                    if (sortId == 0) {
+                        EmployeeCard(employee, viewModel, navController)
                     }
 
-                    if (!refreshing.value) {
-                        items(items = sortedList.filter {
+                    if ((sortId == 1) && (!employee.dateInNextYear)) {
+                        EmployeeCard(employee, viewModel, navController)
+                    }
 
-                            if (tabListItems[selectedIndex] == "All") {
-                                tabListItems[selectedIndex] == "All"
-                            } else {
-                                it.department == tabListItems[selectedIndex]
-                            }
-                        }.filter {
-                            it.firstName.lowercase().startsWith(searchText.lowercase()) ||
-                                    it.lastName.lowercase().startsWith(searchText.lowercase())
-                        }) { employee ->
+                }
+                item {
+                    if (sortId == 1 && haveBirthdayNextYear) {
+                        NextYearItem(nextYear = nextYear)
+                    }
+                }
 
-                            if (sortId == 0) {
-                                EmployeeCard(employee, viewModel, navController)
-                            }
-
-                            if ((sortId == 1) && (!employee.dateInNextYear)) {
-                                EmployeeCard(employee, viewModel, navController)
-                            }
+                if (sortId == 1) {
+                    items(items = sortedList.filter {
+                        if (tabListItems[selectedIndex] == "All") {
+                            tabListItems[selectedIndex] == "All"
+                        } else {
+                            it.department == tabListItems[selectedIndex]
                         }
-                        item {
-                            if (sortId == 1 && haveBirthdayNextYear) {
-                                NextYearItem(nextYear = nextYear)
-                            }
-                        }
-                        if (sortId == 1) {
-                            items(items = sortedList.filter {
-                                if (tabListItems[selectedIndex] == "All") {
-                                    tabListItems[selectedIndex] == "All"
-                                } else {
-                                    it.department == tabListItems[selectedIndex]
-                                }
-                            }.filter {
-                                it.firstName.lowercase().startsWith(searchText.lowercase()) ||
-                                        it.lastName.lowercase().startsWith(searchText.lowercase())
-                            }) { employee ->
-                                if (employee.dateInNextYear) {
-                                    EmployeeCard(employee, viewModel, navController)
-                                }
+                    }.filter {
+                        it.firstName.lowercase().startsWith(searchText.lowercase()) ||
+                        it.lastName.lowercase().startsWith(searchText.lowercase()) ||
+                        it.userTag.lowercase().startsWith(searchText.lowercase())
+                    }) { employee ->
+                        if (employee.dateInNextYear) {
+                            EmployeeCard(employee, viewModel, navController)
 
-                            }
                         }
 
                     }
                 }
-
-
-
-
-               /* if (sortId == 1) {
-
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
-                    ) {
-                        if (refreshing.value) {
-                            items(items = sortedList.filter {
-                                if (tabListItems[selectedIndex] == "All") {
-                                    tabListItems[selectedIndex] == "All"
-                                } else {
-                                    it.department == tabListItems[selectedIndex]
-                                }
-                            }.filter {
-                                it.firstName.lowercase().startsWith(searchText.lowercase()) ||
-                                        it.lastName.lowercase().startsWith(searchText.lowercase())
-                            }) { employee ->
-                                if (employee.dateInNextYear) {
-                                    EmployeeCard(employee, viewModel, navController)
-                                    NextYearItem(nextYear = nextYear)
-                                }
-
-                            }
-                        }
+                /*if (filteredItemsNotFound.value){
+                    item{
+                        NotFound()
                     }
+
                 }*/
+            }
+        }
+
 
     }
+
 }
 
 
