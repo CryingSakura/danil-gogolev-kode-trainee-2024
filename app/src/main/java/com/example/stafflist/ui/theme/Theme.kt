@@ -24,16 +24,11 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = ForPrimaryColor,
-    secondary = Color.White,
+    secondary = SearchBarContainerColor,
     tertiary =  Color.White,
-    background = Color.White,
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    primaryContainer = Color.White,
+    background = ThemeBackgroundColor,
+    onSecondary = ForOnSecondaryColor
+
 
 
 )

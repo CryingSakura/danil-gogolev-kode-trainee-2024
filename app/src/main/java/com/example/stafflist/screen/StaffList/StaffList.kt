@@ -1,11 +1,10 @@
 package com.example.stafflist.screen.StaffList
 
 import android.util.Log
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -29,8 +28,7 @@ import com.example.stafflist.screen.StaffList.fragments.PullRefresh.CustomIndica
 import kotlinx.coroutines.delay
 import java.util.Calendar
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class,
-    ExperimentalAnimationApi::class
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class
 )
 @Composable
 fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
@@ -109,8 +107,8 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
 
     var haveBirthdayNextYear = false
 
-    for (i in 0 until sortedList.size){
-        if (sortedList[i].dateInNextYear){
+    for (element in sortedList){
+        if (element.dateInNextYear){
             haveBirthdayNextYear = true
             break
         }
@@ -166,23 +164,21 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
 
 
     HorizontalPager(state = pagerState) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .pullRefresh(pullRefreshState)
-        )
-        {
-            CustomIndicatorRefresh(
-                viewModel = customIndicatorViewModel,
-                pullToRefreshProgress = pullRefreshState.progress
-            )
-
-            Box(modifier = Modifier.weight(1f)) {
-
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(top = 2.dp)
+                        .padding(horizontal = 16.dp)
+                        .pullRefresh(pullRefreshState),
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
+                    item {
+                        CustomIndicatorRefresh(
+                            viewModel = customIndicatorViewModel,
+                            pullToRefreshProgress = pullRefreshState.progress
+                        )
+                    }
+
                     if (!refreshing.value) {
                         items(items = sortedList.filter {
 
@@ -195,6 +191,7 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
                             it.firstName.lowercase().startsWith(searchText.lowercase()) ||
                                     it.lastName.lowercase().startsWith(searchText.lowercase())
                         }) { employee ->
+
                             if (sortId == 0) {
                                 EmployeeCard(employee, viewModel, navController)
                             }
@@ -229,15 +226,15 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
                     }
                 }
 
-                Log.e("GogaSortID", "$sortId")
 
 
 
-                if (sortId == 1) {
+               /* if (sortId == 1) {
 
                     LazyColumn(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         if (refreshing.value) {
                             items(items = sortedList.filter {
@@ -258,16 +255,7 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController){
                             }
                         }
                     }
-                }
-            }
-
-
-
-
-
-
-
-        }
+                }*/
 
     }
 }
