@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.ExperimentalMaterialApi
@@ -24,6 +25,7 @@ import com.example.stafflist.MainActivityViewModel
 import com.example.stafflist.data.DateChanger
 import com.example.stafflist.screen.StaffList.fragments.EmployeeCard
 import com.example.stafflist.screen.StaffList.fragments.NextYearItem
+import com.example.stafflist.screen.StaffList.fragments.NotFound
 import com.example.stafflist.screen.StaffList.fragments.PullRefresh.CustomIndicatorRefresh
 import kotlinx.coroutines.delay
 import java.util.Calendar
@@ -41,7 +43,6 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
     val customIndicatorViewModel = viewModel.staffListViewModel.customIndicatorViewModel
 
     val searchText = searchViewModel.searchText.collectAsState().value
-
 
     val selectedIndex = tabRowViewModel.selectedIndex.collectAsState().value
 
@@ -75,6 +76,7 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
     })
 
 
+
     val sortedList = when (sortId) {
         0 -> staffList.sortedBy { it.firstName }
         1 -> {
@@ -88,18 +90,12 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
     }
 
     sortedList.forEach {
-        Log.d("GogaMyMonth", "${DateChanger(it.birthday).month}")
         if (DateChanger(it.birthday).month < currentMonth) {
             it.dateInNextYear = true
-            Log.e("GogaWork", "$it")
         } else if (DateChanger(it.birthday).month == currentMonth && DateChanger(it.birthday).day < currentDay) {
             it.dateInNextYear = true
         }
     }
-
-    Log.e("GogaCurrentMonth", "$currentMonth")
-    Log.e("GogaCurrentDay", "$currentDay")
-    Log.e("GogaCurrentYear", "$currentYear")
 
     var haveBirthdayNextYear = false
 
@@ -110,14 +106,6 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
         }
     }
     Log.e("GogaHaveBirthday", "$haveBirthdayNextYear")
-
-    /*var show: Boolean = false*/
-    /*
-        staffListViewModel.sortByIndex(sortId, viewModel.staffListViewModel.staffList)*/
-
-
-    Log.e("GogaSortTestStaff", "${sortViewModel.indexOfSelectedItem.collectAsState().value}")
-    Log.e("GogaSortTestStaff", "${sortViewModel.indexOfSelectedItem}")
 
 
     val isRefreshing = staffListViewModel.isRefreshing.collectAsState().value
@@ -149,9 +137,12 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
         }
     }
 
+    val state = rememberLazyListState()
+
 
     HorizontalPager(state = pagerState) {
         LazyColumn(
+            state = state,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 2.dp)
@@ -159,6 +150,10 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
                 .pullRefresh(pullRefreshState),
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
+            val filteredItems = sortedList.filter { it.firstName.lowercase().startsWith(searchText.lowercase()) ||
+                    it.lastName.lowercase().startsWith(searchText.lowercase()) ||
+                    it.userTag.lowercase().startsWith(searchText.lowercase()) }
+
 
 
             item {
@@ -169,17 +164,13 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
             }
 
             if (!refreshing.value) {
-                items(items = sortedList.filter {
+                items(items = filteredItems.filter {
 
                     if (tabListItems[selectedIndex] == "All") {
                         tabListItems[selectedIndex] == "All"
                     } else {
                         it.department == tabListItems[selectedIndex]
                     }
-                }.filter {
-                    it.firstName.lowercase().startsWith(searchText.lowercase()) ||
-                    it.lastName.lowercase().startsWith(searchText.lowercase()) ||
-                    it.userTag.lowercase().startsWith(searchText.lowercase())
                 }) { employee ->
 
 
@@ -200,16 +191,12 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
                 }
 
                 if (sortId == 1) {
-                    items(items = sortedList.filter {
+                    items(items = filteredItems.filter {
                         if (tabListItems[selectedIndex] == "All") {
                             tabListItems[selectedIndex] == "All"
                         } else {
                             it.department == tabListItems[selectedIndex]
                         }
-                    }.filter {
-                        it.firstName.lowercase().startsWith(searchText.lowercase()) ||
-                        it.lastName.lowercase().startsWith(searchText.lowercase()) ||
-                        it.userTag.lowercase().startsWith(searchText.lowercase())
                     }) { employee ->
                         if (employee.dateInNextYear) {
                             EmployeeCard(employee, viewModel, navController)
@@ -218,12 +205,14 @@ fun StaffList(viewModel: MainActivityViewModel, navController: NavController) {
 
                     }
                 }
-                /*if (filteredItemsNotFound.value){
-                    item{
-                        NotFound()
-                    }
 
-                }*/
+
+
+            }
+            if (filteredItems.isEmpty()) {
+                item {
+                    NotFound()
+                }
             }
         }
 
