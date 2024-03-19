@@ -22,6 +22,7 @@ import com.example.stafflist.screen.CustomTopAppBar.fragments.TabRow.TabRowViewM
 import com.example.stafflist.screen.DetailSreen.DetailSreenViewModel
 import com.example.stafflist.screen.SortScreen.SortViewModel
 import com.example.stafflist.screen.StaffList.StaffListViewModel
+import com.example.stafflist.screen.StaffList.fragments.PullRefresh.CustomIdnicatorViewModel
 import com.example.stafflist.ui.theme.StaffListTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,8 @@ class MainActivity : ComponentActivity() {
         object : ViewModelProvider.Factory{
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return MainActivityViewModel(
-                    StaffListViewModel(StaffListRepImplementation(RetrofitInstance.requestService)),
+                    StaffListViewModel(StaffListRepImplementation(RetrofitInstance.requestService),
+                        CustomIdnicatorViewModel()),
                     TopAppBarViewModel(
                         TabRowViewModel(),
                         SearchViewModel()),
